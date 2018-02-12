@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @score.user_id %>
+</p>
+
+<p>
+  <strong>Store:</strong>
+  <%= @score.store_id %>
+</p>
+
+<p>
+  <strong>Model:</strong>
+  <%= @score.model %>
+</p>
+
+<p>
+  <strong>Seat:</strong>
+  <%= @score.seat %>
+</p>
+
+<p>
+  <strong>Start at:</strong>
+  <%= @score.start_at %>
+</p>
+
+<p>
+  <strong>End at:</strong>
+  <%= @score.end_at %>
+</p>
+
+<p>
+  <strong>Investment:</strong>
+  <%= @score.investment %>
+</p>
+
+<p>
+  <strong>Proceeds:</strong>
+  <%= @score.proceeds %>
+</p>
+
+<%= link_to 'Edit', edit_score_path(@score) %> |
+<%= link_to 'Back', scores_path %>

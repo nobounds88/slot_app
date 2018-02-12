@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180212043217) do
+ActiveRecord::Schema.define(version: 20180212084500) do
+
+  create_table "blogs", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "store_id"
+    t.string "model"
+    t.integer "seat"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer "investment"
+    t.integer "proceeds"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stores", force: :cascade do |t|
+    t.string "name"
+    t.string "name_kana"
+    t.string "area"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
