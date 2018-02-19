@@ -1,10 +1,12 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-    <%= link_to "sample app", '#', id: "logo" %>
+    <%= link_to "slot app", '#', id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home",    '#' %></li>
-        <li><%= link_to "Help",    '#' %></li>
+        <li><%= link_to "Home",    root_path %></li>
+        <li><%= link_to "収支記録",    scores_path %></li>
+        <li><%= link_to "ブログ",    blogs_path %></li>
+        <li><%= link_to "Help",    help_path %></li>
         <li><%= link_to "Sign in", '#' %></li>
       </ul>
       </nav>
