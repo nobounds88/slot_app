@@ -55,11 +55,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'bootstrap-sass', '3.3.6'
 gem 'devise', '4.4.1'
-gem 'jquery-rails' 
-gem 'jquery-ui-rails'
-gem 'faker'
-gem 'will_paginate'
-gem 'will_paginate-bootstrap'
+gem 'jquery-rails' , '4.3.1'
+gem 'jquery-ui-rails', '6.0.1'
+gem 'faker', '1.8.7'
+gem 'will_paginate', '3.1.6'
+gem 'will_paginate-bootstrap', '1.0.1'
+gem 'enumerize'
 
 # group :doc do
 #   gem 'sdoc', '0.4.1', require: false
