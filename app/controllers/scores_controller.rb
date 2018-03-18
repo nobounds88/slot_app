@@ -1,10 +1,37 @@
 class ScoresController < ApplicationController
   before_action :set_score, only: [:show, :edit, :update, :destroy]
-
+  
   # GET /scores
   # GET /scores.json
   def index
-    @scores = Score.all
+    @search_params ||= {}
+    @search_params[:id] = params[:id]
+    @search_params[:user_id] = params[:user_id]
+    @search_params[:model] = params[:model]
+    @search_params[:play_start] = params[:play_start]
+    @search_params[:play_end] = params[:play_end]
+    @win_or_lose = params[:win_or_lose]
+    # store_id = params[:store_id]
+
+    # binding.pry
+    
+    relation = Score.all
+    relation = relation.where(id: @search_params[:id]) if @search_params[:id].present?
+    relation = relation.where(user_id: @search_params[:user_id]) if @search_params[:user_id].present?
+    relation = relation.where( "model like ?", "%" + @search_params[:model] + "%") if @search_params[:model].present?
+    relation = relation.where( "start_at >= ?", @search_params[:play_start].to_datetime) if @search_params[:play_start].present?
+    relation = relation.where( "end_at < ?", @search_params[:play_end].to_datetime.tomorrow) if @search_params[:play_end].present?
+    
+    case @win_or_lose.to_i
+    when 1 then
+      relation = relation.where("investment + proceeds > 0")
+    when 2 then
+      relation = relation.where("investment + proceeds < 0")
+    when 3 then
+      relation = relation.where("investment + proceeds == 0")
+    end
+    
+    @scores = relation 
   end
 
   # GET /scores/1
@@ -40,6 +67,9 @@ class ScoresController < ApplicationController
   # PATCH/PUT /scores/1
   # PATCH/PUT /scores/1.json
   def update
+    # @search_params ||= {}
+    # @score[:user_id] = params[:user_name]
+    
     respond_to do |format|
       if @score.update(score_params)
         format.html { redirect_to @score, notice: 'Score was successfully updated.' }

@@ -10,12 +10,14 @@
       </ul>
     </div>
   <% end %>
-
+  
   <div class="field">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id, id: :score_user_id %>
+    <%= form.label :user %>
+    <%#= form.number_field :user_id, id: :score_user_id %>
+    <%# binding.pry %>
+    <%= select_tag("user_name", options_for_select(User.pluck(:name), @user_name)) %>
   </div>
-
+  
   <div class="field">
     <%= form.label :store_id %>
     <%= form.number_field :store_id, id: :score_store_id %>
