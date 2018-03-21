@@ -1,6 +1,6 @@
-<h1>Editing Score</h1>
+<h1><%= "#{Score.model_name.human}管理" %></h1>
 
 <%= render 'form', score: @score %>
 
-<%= link_to 'Show', @score %> |
-<%= link_to 'Back', scores_path %>
+<%= link_to t(:show), @score %> |
+<%= link_to t(:back), scores_path %>

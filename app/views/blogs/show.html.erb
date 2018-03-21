@@ -1,19 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
+  <strong><%= User.model_name.human %>:</strong>
   <%= @blog.user_id %>
 </p>
 
 <p>
-  <strong>Title:</strong>
+  <strong><%= Blog.human_attribute_name(:title) %>:</strong>
   <%= @blog.title %>
 </p>
 
 <p>
-  <strong>Body:</strong>
+  <strong><%= Blog.human_attribute_name(:body) %>:</strong>
   <%= @blog.body %>
 </p>
 
-<%= link_to 'Edit', edit_blog_path(@blog) %> |
-<%= link_to 'Back', blogs_path %>
+<%= link_to t(:edit), edit_blog_path(@blog) %> |
+<%= link_to t(:back), blogs_path %>

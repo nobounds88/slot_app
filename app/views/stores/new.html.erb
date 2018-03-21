@@ -1,5 +1,5 @@
-<h1>New Store</h1>
+<h1><%= "#{Store.model_name.human}追加" %></h1>
 
 <%= render 'form', store: @store %>
 
-<%= link_to 'Back', stores_path %>
+<%= link_to t(:back), stores_path %>

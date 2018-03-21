@@ -1,44 +1,44 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
+  <strong><%= User.model_name.human %>:</strong>
   <%= @score.user.name %>
 </p>
 
 <p>
-  <strong>Store:</strong>
+  <strong><%= Store.model_name.human %>:</strong>
   <%= @score.store.name %>
 </p>
 
 <p>
-  <strong>Model:</strong>
+  <strong><%= Score.human_attribute_name(:model) %>:</strong>
   <%= @score.model %>
 </p>
 
 <p>
-  <strong>Seat:</strong>
+  <strong><%= Score.human_attribute_name(:seat) %>:</strong>
   <%= @score.seat %>
 </p>
 
 <p>
-  <strong>Start at:</strong>
+  <strong><%= Score.human_attribute_name(:start_at) %>:</strong>
   <%= @score.start_at %>
 </p>
 
 <p>
-  <strong>End at:</strong>
+  <strong><%= Score.human_attribute_name(:end_at) %>:</strong>
   <%= @score.end_at %>
 </p>
 
 <p>
-  <strong>Investment:</strong>
+  <strong><%= Score.human_attribute_name(:investment) %>:</strong>
   <%= @score.investment %>
 </p>
 
 <p>
-  <strong>Proceeds:</strong>
+  <strong><%= Score.human_attribute_name(:proceeds) %>:</strong>
   <%= @score.proceeds %>
 </p>
 
-<%= link_to 'Edit', edit_score_path(@score) %> |
-<%= link_to 'Back', scores_path %>
+<%= link_to t(:edit), edit_score_path(@score) %> |
+<%= link_to t(:back), scores_path %>

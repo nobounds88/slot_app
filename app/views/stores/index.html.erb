@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Stores</h1>
+<h1><%= "#{Store.model_name.human}管理" %></h1>
 
 <table>
   <thead>
@@ -18,9 +18,9 @@
         <td><%= store.name %></td>
         <td><%= store.name_kana %></td>
         <td><%= store.area %></td>
-        <td><%= link_to 'Show', store %></td>
-        <td><%= link_to 'Edit', edit_store_path(store) %></td>
-        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to t(:show), store %></td>
+        <td><%= link_to t(:edit), edit_store_path(store) %></td>
+        <td><%= link_to t(:destroy), store, method: :delete, data: { confirm: t(:Are_you_sure?) } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Store', new_store_path %>
+<%= link_to t(new_store), new_store_path %>

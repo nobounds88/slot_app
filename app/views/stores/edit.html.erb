@@ -1,6 +1,6 @@
-<h1>Editing Store</h1>
+<h1><%= "#{Store.model_name.human}管理" %></h1>
 
 <%= render 'form', store: @store %>
 
-<%= link_to 'Show', @store %> |
-<%= link_to 'Back', stores_path %>
+<%= link_to t(:show), @store %> |
+<%= link_to t(:back), stores_path %>
