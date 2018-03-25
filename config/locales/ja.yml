@@ -1,5 +1,6 @@
 ja:
   hello_html: '<b>こんにちは %{username} さん</b>'
+  Welcome_to_the_Slot_App: 'ようこそSLOT APPへ'
   Home: 'ホーム'
   users: 'ユーザーリスト'
   account: 'アカウント'
