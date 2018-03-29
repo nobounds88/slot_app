@@ -26,7 +26,103 @@
     <%= form.text_field :area, id: :store_area %>
   </div>
 
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.text_field :address, id: :store_address %>
+    <%= button_tag "住所から検索", id: "search_by_address" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, id: :store_latitude %>
+  </div>
+
+  <div class="field">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, id: :store_longitude %>
+  </div>
+  
+  <style type="text/css">
+  #map { height: 400px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:left;
+    width: 80%;}
+  </style>
+  
+  <div class="field">
+    <div id="map"></div>
+  </div>
+  
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  document.getElementById("search_by_address").onclick = function(e) {
+    e.preventDefault();
+    search_by_address();
+  };
+
+  function search_by_address() {
+    var address = document.getElementById('store_address').value;
+
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode(
+      {
+        'address': address,
+        'region': 'jp'
+      },
+      function(results, status){
+        if(status==google.maps.GeocoderStatus.OK){
+        	//処理
+        	var latlng = results[0].geometry.location
+        	document.getElementById('store_latitude').value = latlng.lat();
+        	document.getElementById('store_latitude').value = latlng.lng();
+        	update_map(latlng);
+        }
+      }
+    );
+  }
+
+  var map;
+  
+  function update_map(latlng) {
+    new google.maps.Marker({
+      position: latlng,
+      map: map
+    });
+    map.setCenter(latlng);
+  }
+
+  
+    function initMap() {
+
+        var test ={lat: <%= @store.latitude %>, lng: <%= @store.longitude %>};
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: test
+        });
+        var transitLayer = new google.maps.TransitLayer();
+        transitLayer.setMap(map);
+
+        var contentString = '住所：<%= @store.address %>';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        var marker = new google.maps.Marker({
+            position:test,
+            map: map,
+            title: contentString
+        });
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDfoJttru5KMPC-d8gojhfEypF0elJAkvI&callback=initMap">
+</script>

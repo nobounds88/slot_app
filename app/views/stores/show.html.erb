@@ -4,15 +4,25 @@
   <strong>Name:</strong>
   <%= @store.name %>
 </p>
-
 <p>
   <strong>Name kana:</strong>
   <%= @store.name_kana %>
 </p>
-
 <p>
   <strong>Area:</strong>
   <%= @store.area %>
+</p>
+<p>
+  <strong>address:</strong>
+  <%= @store.address %>
+</p>
+<p>
+  <strong>latitude:</strong>
+  <%= @store.latitude %>
+</p>
+<p>
+  <strong>longitude:</strong>
+  <%= @store.longitude %>
 </p>
 
 <%= link_to t(:edit), edit_store_path(@store) %> |

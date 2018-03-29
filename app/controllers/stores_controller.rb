@@ -6,26 +6,28 @@ class StoresController < ApplicationController
   def index
     @stores = Store.all
   end
-
+  
   # GET /stores/1
   # GET /stores/1.json
   def show
   end
-
+  
   # GET /stores/new
   def new
     @store = Store.new
+    @store.latitude = 35.9063548
+    @store.longitude = 139.6230662
   end
-
+  
   # GET /stores/1/edit
   def edit
   end
-
+  
   # POST /stores
   # POST /stores.json
   def create
     @store = Store.new(store_params)
-
+  
     respond_to do |format|
       if @store.save
         format.html { redirect_to @store, notice: 'Store was successfully created.' }
@@ -69,6 +71,6 @@ class StoresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:name, :name_kana, :area)
+      params.require(:store).permit(:name, :name_kana, :area, :address, :latitude, :longitude)
     end
 end

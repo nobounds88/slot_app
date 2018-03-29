@@ -9,6 +9,7 @@
         
         <% if signed_in? %>
           <li><%= link_to Score.model_name.human,    scores_path %></li>
+          <li><%= link_to Store.model_name.human,    stores_path %></li>
           <li><%= link_to Blog.model_name.human,    blogs_path %></li>
           <li><%= link_to t(:sign_in), new_user_session_path %></li>
           <li><%= link_to t(:users), users_path %></li>
