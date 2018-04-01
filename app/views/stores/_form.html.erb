@@ -32,6 +32,11 @@
     <%= button_tag "住所から検索", id: "search_by_address" %>
   </div>
 
+  <div class="ui-widget">
+    <label for="tags">プログラミング言語: </label>
+    <input id="tags" />
+  </div>
+
   <div class="field">
     <%= form.label :latitude %>
     <%= form.text_field :latitude, id: :store_latitude %>
@@ -42,32 +47,123 @@
     <%= form.text_field :longitude, id: :store_longitude %>
   </div>
   
+  <div id="findholes">
+      地域から検索:
+  </div>
+  <div id="locationField">
+    <input id="autocomplete" placeholder="Enter a city" type="text" />
+  </div>
+    
   <style type="text/css">
-  #map { height: 400px;
-    margin-left:auto;
-    margin-right:auto;
-    text-align:left;
-    width: 80%;}
+    #map { 
+      height: 400px;
+      margin-left:auto;
+      margin-right:auto;
+      text-align:left;
+      width: 70%;
+      float: left;
+    }
+    #listing {
+      /*position: absolute;*/
+      width: 30%;
+      height: 400px;
+      overflow: auto;
+      cursor: pointer;
+      overflow-x: hidden;
+      float: right;
+    }
   </style>
   
   <div class="field">
     <div id="map"></div>
   </div>
   
+  <div id="listing">
+    <table id="resultsTable">
+      <tbody id="results"></tbody>
+    </table>
+  </div>
+  <div style="display: none">
+    <div id="info-content">
+      <table>
+        <tr id="iw-url-row" class="iw_table_row">
+          <td id="iw-icon" class="iw_table_icon"></td>
+          <td id="iw-url"></td>
+        </tr>
+        <tr id="iw-address-row" class="iw_table_row">
+          <td class="iw_attribute_name">Address:</td>
+          <td id="iw-address"></td>
+        </tr>
+        <tr id="iw-phone-row" class="iw_table_row">
+          <td class="iw_attribute_name">Telephone:</td>
+          <td id="iw-phone"></td>
+        </tr>
+        <tr id="iw-rating-row" class="iw_table_row">
+          <td class="iw_attribute_name">Rating:</td>
+          <td id="iw-rating"></td>
+        </tr>
+        <tr id="iw-website-row" class="iw_table_row">
+          <td class="iw_attribute_name">Website:</td>
+          <td id="iw-website"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+    
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
 
 <script type="text/javascript">
+
+  var search_results = [];
+  
+  $(function() {
+    $('#store_address').autocomplete({
+      source: function(request, response) {
+        search_by_address(request.term, function(){
+          var addresses = []
+          console.log(JSON.stringify(search_results))
+          for (var i in search_results) {
+            addresses.push(search_results[i].address)
+          }
+          response(addresses);
+        })
+      },
+      select: function(e, ui) {
+        if (ui.item) {
+          for (var i in search_results) {
+            if (search_results[i].address == ui.item.value) {
+              update_map(search_results[i].latlng)  
+            }
+          }
+        }
+      },
+      autoFocus: true,
+      delay: 500,
+      minLength: 2
+    });
+  });
+
+  var map, places, infowindow;
+  var markers = [];
+  var autocomplete;
+  var countryRestrict = {'country': 'jp'};
+  var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+  var hostnameRegexp = new RegExp('^https?://.+?/');
+
   document.getElementById("search_by_address").onclick = function(e) {
     e.preventDefault();
-    search_by_address();
+    var address = document.getElementById('store_address').value;
+    search_by_address(address, function() {
+      if (search_results.length > 0) {
+      	update_map(search_results[0].latlng);
+      }
+    });
   };
 
-  function search_by_address() {
-    var address = document.getElementById('store_address').value;
-
+  function search_by_address(address, callback) {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode(
       {
@@ -75,54 +171,225 @@
         'region': 'jp'
       },
       function(results, status){
+        search_results = []
         if(status==google.maps.GeocoderStatus.OK){
-        	//処理
-        	var latlng = results[0].geometry.location
-        	document.getElementById('store_latitude').value = latlng.lat();
-        	document.getElementById('store_latitude').value = latlng.lng();
-        	update_map(latlng);
+          for (var i in results) {
+            search_results.push({
+              address: results[i].formatted_address,
+              latlng: results[i].geometry.location
+            });
+          }
+          callback();
         }
       }
     );
   }
-
-  var map;
   
   function update_map(latlng) {
+    document.getElementById('store_latitude').value = latlng.lat();
+    document.getElementById('store_longitude').value = latlng.lng();
+    
     new google.maps.Marker({
       position: latlng,
       map: map
     });
     map.setCenter(latlng);
   }
-
   
-    function initMap() {
+  function initMap() {
+      var test ={lat: <%= @store.latitude %>, lng: <%= @store.longitude %>};
+      map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: test
+      });
+      var transitLayer = new google.maps.TransitLayer();
+      transitLayer.setMap(map);
 
-        var test ={lat: <%= @store.latitude %>, lng: <%= @store.longitude %>};
-        map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 15,
-            center: test
-        });
-        var transitLayer = new google.maps.TransitLayer();
-        transitLayer.setMap(map);
+      var contentString = '住所：<%= @store.address %>';
+      
+      infowindow = new google.maps.InfoWindow({
+          // content: contentString
+          content: document.getElementById('info-content')
+      });
 
-        var contentString = '住所：<%= @store.address %>';
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
+      autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */ (
+              document.getElementById('autocomplete')), {
+            types: ['(cities)'],
+            componentRestrictions: countryRestrict
+          });
+      places = new google.maps.places.PlacesService(map);
 
-        var marker = new google.maps.Marker({
-            position:test,
-            map: map,
-            title: contentString
-        });
+      autocomplete.addListener('place_changed', onPlaceChanged);
 
-        marker.addListener('click', function() {
-            infowindow.open(map, marker);
-        });
+      // Add a DOM event listener to react when the user selects a country.
+      // document.getElementById('country').addEventListener('change', setAutocompleteCountry);
+  }
+  
+  
+  function onPlaceChanged() {
+    var place = autocomplete.getPlace();
+    if (place.geometry) {
+      map.panTo(place.geometry.location);
+      map.setZoom(14);
+      search();
+    } else {
+      document.getElementById('autocomplete').placeholder = 'Enter a city';
     }
+  }
+    // Search for hotels in the selected city, within the viewport of the map.
+  function search() {
+    var search = {
+      bounds: map.getBounds(),
+      // types: ['cafe']
+      keyword: ['パチスロ']
+    };
+
+    places.nearbySearch(search, function(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        clearResults();
+        clearMarkers();
+        // Create a marker for each hotel found, and
+        // assign a letter of the alphabetic to each marker icon.
+        for (var i = 0; i < results.length; i++) {
+          var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+          var markerIcon = MARKER_PATH + markerLetter + '.png';
+          // Use marker animation to drop the icons incrementally on the map.
+          markers[i] = new google.maps.Marker({
+            position: results[i].geometry.location,
+            animation: google.maps.Animation.DROP,
+            icon: markerIcon
+          });
+          // If the user clicks a hotel marker, show the details of that hotel
+          // in an info window.
+          markers[i].placeResult = results[i];
+          google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+          setTimeout(dropMarker(i), i * 100);
+          addResult(results[i], i);
+        }
+      }
+    });
+  }
+  function clearMarkers() {
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i]) {
+        markers[i].setMap(null);
+      }
+    }
+    markers = [];
+  }
+  
+  function setAutocompleteCountry() {
+    // var country = document.getElementById('country').value;
+    var country = 'jp';
+    
+    autocomplete.setComponentRestrictions({'country': country});
+    // map.setCenter(countries[country].center);
+    // map.setZoom(countries[country].zoom);
+    
+    clearResults();
+    clearMarkers();
+  }
+  function dropMarker(i) {
+    return function() {
+      markers[i].setMap(map);
+    };
+  }
+  function addResult(result, i) {
+    var results = document.getElementById('results');
+    var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+    var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+      google.maps.event.trigger(markers[i], 'click');
+    };
+
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+  }
+
+  function clearResults() {
+    var results = document.getElementById('results');
+    while (results.childNodes[0]) {
+      results.removeChild(results.childNodes[0]);
+    }
+  }
+  // Get the place details for a hole. Show the information in an info window,
+  // anchored on the marker for the hole that the user selected.
+  function showInfoWindow() {
+    var marker = this;
+    places.getDetails({placeId: marker.placeResult.place_id},
+        function(place, status) {
+          if (status !== google.maps.places.PlacesServiceStatus.OK) {
+            return;
+          }
+          infowindow.open(map, marker);
+          buildIWContent(place);
+        });
+  }
+  // Load the place information into the HTML elements used by the info window.
+  function buildIWContent(place) {
+    document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' +
+        'src="' + place.icon + '"/>';
+    document.getElementById('iw-url').innerHTML = '<b><a href="' + place.url +
+        '">' + place.name + '</a></b>';
+    document.getElementById('iw-address').textContent = place.vicinity;
+
+    if (place.formatted_phone_number) {
+      document.getElementById('iw-phone-row').style.display = '';
+      document.getElementById('iw-phone').textContent =
+          place.formatted_phone_number;
+    } else {
+      document.getElementById('iw-phone-row').style.display = 'none';
+    }
+
+    // Assign a five-star rating to the hotel, using a black star ('&#10029;')
+    // to indicate the rating the hotel has earned, and a white star ('&#10025;')
+    // for the rating points not achieved.
+    if (place.rating) {
+      var ratingHtml = '';
+      for (var i = 0; i < 5; i++) {
+        if (place.rating < (i + 0.5)) {
+          ratingHtml += '&#10025;';
+        } else {
+          ratingHtml += '&#10029;';
+        }
+      document.getElementById('iw-rating-row').style.display = '';
+      document.getElementById('iw-rating').innerHTML = ratingHtml;
+      }
+    } else {
+      document.getElementById('iw-rating-row').style.display = 'none';
+    }
+
+    // The regexp isolates the first part of the URL (domain plus subdomain)
+    // to give a short URL for displaying in the info window.
+    if (place.website) {
+      var fullUrl = place.website;
+      var website = hostnameRegexp.exec(place.website);
+      if (website === null) {
+        website = 'http://' + place.website + '/';
+        fullUrl = website;
+      }
+      document.getElementById('iw-website-row').style.display = '';
+      document.getElementById('iw-website').textContent = website;
+    } else {
+      document.getElementById('iw-website-row').style.display = 'none';
+    }
+  }
 </script>
+
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDfoJttru5KMPC-d8gojhfEypF0elJAkvI&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDfoJttru5KMPC-d8gojhfEypF0elJAkvI&libraries=places&callback=initMap">
 </script>
