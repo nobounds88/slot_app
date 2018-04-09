@@ -55,7 +55,10 @@ ja:
       store:
         name: 'ホール名'
         area: '地域'
-
+        address: '住所'
+        latitude: '緯度'
+        longitude: '経度'
+        
   enumerize:
     user:
       gender: 
