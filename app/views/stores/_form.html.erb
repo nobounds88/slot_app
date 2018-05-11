@@ -99,9 +99,18 @@
 <% end %>
 
 <script type="text/javascript">
-
-  var map, places;
-  var infowindow_from_area, infowindow_from_name;
+  
+  $(function(){
+      $("input"). keydown(function(e) {
+          if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+              return false;
+          } else {
+              return true;
+          }
+      });
+  });
+    
+  var map, places, infowindow;
   var markers = [];
   var autocomplete_area;
   var countryRestrict = {'country': 'jp'};
@@ -114,41 +123,34 @@
         zoom: 14,
         center: latlng
     });
-    ///////////////////////////////////////////////////////////////////
+    
     autocomplete_area = new google.maps.places.Autocomplete(
       /** @type {!HTMLInputElement} */ (document.getElementById('store_area')), {
         types: ['(cities)'],
         componentRestrictions: countryRestrict
     });
-    places = new google.maps.places.PlacesService(map);
-    autocomplete_area.addListener('place_changed', onPlaceChanged);
-    
-    infowindow_from_area = new google.maps.InfoWindow({
-        content: document.getElementById('info-content')
-    });
-    ///////////////////////////////////////////////////////////////////
-    infowindow_from_name = new google.maps.InfoWindow();
-    
     autocomplete_name = new google.maps.places.Autocomplete(
       /** @type {!HTMLInputElement} */(document.getElementById('store_name')), {
         componentRestrictions: countryRestrict
     });
     
-    autocomplete_name.bindTo('bounds', map);
-    autocomplete_name.addListener('place_changed', onPlaceChanged_name);
+    places = new google.maps.places.PlacesService(map);
     
-    document.getElementById('store_name').value = place.name;
+    infowindow = new google.maps.InfoWindow({
+        content: document.getElementById('info-content')
+    });
+    
+    autocomplete_area.addListener('place_changed', onPlaceChanged);
+    autocomplete_name.addListener('place_changed', onPlaceChanged_name);
   }
   
   function onPlaceChanged_name() {
-    infowindow_from_name.close();
-    
     var place = autocomplete_name.getPlace();
-    var marker = new google.maps.Marker({
-      map: map,
-      anchorPoint: new google.maps.Point(0, -29)
-    });
-    marker.setVisible(false);
+    var markerLetter = String.fromCharCode('A'.charCodeAt(0));
+    var markerIcon = MARKER_PATH + markerLetter + '.png';
+    
+    clearResults();
+    clearMarkers();
     
     if (!place.geometry) {
       window.alert("No details available for input: '" + place.name + "'");
@@ -160,21 +162,26 @@
       map.setCenter(place.geometry.location);
       map.setZoom(17);
     }
-    marker.setIcon(/** @type {google.maps.Icon} */({
-      url: place.icon,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(35, 35)
-    }));
-    marker.setPosition(place.geometry.location);
-    marker.setVisible(true);
     
-    infowindow_from_name.setContent(place.name);
-    infowindow_from_name.open(map, marker);
+    markers[0] = new google.maps.Marker({
+      map: map,
+      anchorPoint: new google.maps.Point(0, -29),
+      position: place.geometry.location,
+      animation: google.maps.Animation.DROP,
+      icon: markerIcon
+    });
+    
+    markers[0].placeResult = place;
+    document.getElementById('store_name').value = place.name;
+    // alert(place.vicinity);//地域は不要？
+    document.getElementById('store_area').value = place.vicinity;
+    document.getElementById('store_address').value = place.vicinity;
+    document.getElementById('store_latitude').value = place.geometry.location.lat();
+    document.getElementById('store_longitude').value = place.geometry.location.lng();
+    google.maps.event.addListener(markers[0], 'click', showInfoWindow);
   }
   
-  ///////////////////////////////////////////////////////////////////
+  
   function onPlaceChanged() {
     var place = autocomplete_area.getPlace();
     if (place.geometry) {
@@ -191,7 +198,7 @@
       bounds: map.getBounds(),
       keyword: ['パチスロ']
     };
-
+  
     places.nearbySearch(search, function(results, status) {
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         clearResults();
@@ -206,7 +213,6 @@
             animation: google.maps.Animation.DROP,
             icon: markerIcon
           });
-          
           markers[i].placeResult = results[i];
           google.maps.event.addListener(markers[i], 'click', showInfoWindow);
           setTimeout(dropMarker(i), i * 100);
@@ -269,13 +275,16 @@
           if (status !== google.maps.places.PlacesServiceStatus.OK) {
             return;
           }
-          infowindow_from_area.open(map, marker);
+          infowindow.open(map, marker);
           buildIWContent(place);
+          document.getElementById('store_name').value = place.name;
+          document.getElementById('store_latitude').value = place.geometry.location.lat();
+          document.getElementById('store_longitude').value = place.geometry.location.lng();
         });
   }
   
   function buildIWContent(place) {
-    document.getElementById('store_name').value = place.name
+    // document.getElementById('store_name').value = place.name
     document.getElementById('store_address').value = place.vicinity
     
     document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' + 'src="' + place.icon + '"/>';
@@ -317,7 +326,6 @@
       document.getElementById('iw-website-row').style.display = 'none';
     }
   }
-  ///////////////////////////////////////////////////////////////////
 </script>
 
 <script async defer
