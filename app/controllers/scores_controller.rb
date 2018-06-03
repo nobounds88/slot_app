@@ -1,5 +1,5 @@
 class ScoresController < ApplicationController
-  before_action :set_score, only: [:show, :edit, :update, :destroy]
+  before_action :set_score, only: [:show, :edit, :update, :update_ajax, :destroy]
   
   # GET /scores
   # GET /scores.json
@@ -15,7 +15,7 @@ class ScoresController < ApplicationController
 
     # binding.pry
     
-    relation = Score.all
+    relation = Score.includes(:user, :store)
     relation = relation.where(id: @search_params[:id]) if @search_params[:id].present?
     relation = relation.where(user_id: @search_params[:user_id]) if @search_params[:user_id].present?
     relation = relation.where( "model like ?", "%" + @search_params[:model] + "%") if @search_params[:model].present?
@@ -31,7 +31,7 @@ class ScoresController < ApplicationController
       relation = relation.where("investment + proceeds == 0")
     end
     
-    @scores = relation 
+    @scores = relation.order(:start_at)
   end
 
   # GET /scores/1
@@ -42,6 +42,7 @@ class ScoresController < ApplicationController
   # GET /scores/new
   def new
     @score = Score.new
+    @score[:seat] = "0000"
   end
 
   # GET /scores/1/edit
@@ -52,7 +53,6 @@ class ScoresController < ApplicationController
   # POST /scores.json
   def create
     @score = Score.new(score_params)
-    # binding.pry
     @score[:user_id] = params[:score_user_id].to_i
     @score[:store_id] = params[:score_store_id].to_i
     
@@ -84,6 +84,17 @@ class ScoresController < ApplicationController
     end
   end
 
+  def update_ajax
+    @score[:start_at] = params[:start_at]
+    @score[:end_at] = params[:end_at]
+    # binding.pry
+    if @score.save
+      render :json => { message: "更新に成功しました。" }
+    else
+      render :json => { message: "更新に失敗しました。" }
+    end
+  end
+  
   # DELETE /scores/1
   # DELETE /scores/1.json
   def destroy

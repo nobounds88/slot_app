@@ -3,7 +3,11 @@ Rails.application.routes.draw do
     :registrations => "registrations"
   }
   resources :users #, only: [:show]
-  resources :scores
+  resources :scores do
+    member do
+      post 'update_ajax'
+    end
+  end
   resources :stores
   resources :blogs
 

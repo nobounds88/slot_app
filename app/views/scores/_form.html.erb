@@ -11,49 +11,53 @@
     </div>
   <% end %>
   
-  <div class="field">
-    <%= form.label User.model_name.human %>
-    <%#= form.number_field :user_id, id: :score_user_id %>
-    <%# binding.pry %>
-    <%= select_tag("score_user_id", options_from_collection_for_select(User.all, :id, :name, @score[:user_id].to_i)) %>
-  </div>
+  <fieldset>
+    <div class="field">
+      <%= form.label User.model_name.human %>
+      <%#= form.number_field :user_id, id: :score_user_id %>
+      <%# binding.pry %>
+      <%= select_tag("score_user_id", options_from_collection_for_select(User.all, :id, :name, @score[:user_id].to_i)) %>
+    </div>
+    
+    <div class="field">
+      <%= form.label Store.model_name.human %>
+      <%= select_tag("score_store_id", options_from_collection_for_select(Store.all, :id, :name, @score[:store_id].to_i)) %>
+    </div>
   
-  <div class="field">
-    <%= form.label Store.model_name.human %>
-    <%= select_tag("score_store_id", options_from_collection_for_select(Store.all, :id, :name, @score[:store_id].to_i)) %>
-  </div>
-
-  <div class="field">
-    <%= form.label :model %>
-    <%= form.text_field :model, id: :score_model %>
-  </div>
+    <div class="field">
+      <%= form.label :model %>
+      <%= form.text_field :model, id: :score_model %>
+    </div>
+    
+    <div class="field">
+      <%= form.label :seat %>
+      <%= form.number_field :seat, id: :score_seat %>
+    </div>
   
-  <div class="field">
-    <%= form.label :seat %>
-    <%= form.number_field :seat, id: :score_seat %>
-  </div>
+    <div class="form-control">
+      <%= form.label :start_at %>
+      <%= form.datetime_select :start_at, id: :score_start_at %>
+    </div>
+  
+    <div class="form-control">
+      <%= form.label :end_at %>
+      <%= form.datetime_select :end_at, id: :score_end_at %>
+    </div>
+    
+    <div class="field">
+      <%= form.label :investment %>
+      <%= form.number_field :investment, id: :score_investment %>
+    </div>
+  
+    <div class="field">
+      <%= form.label :proceeds %>
+      <%= form.number_field :proceeds, id: :score_proceeds %>
+    </div>
 
-  <div class="field">
-    <%= form.label :start_at %>
-    <%= form.datetime_select :start_at, id: :score_start_at %>
-  </div>
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  </fieldset>
 
-  <div class="field">
-    <%= form.label :end_at %>
-    <%= form.datetime_select :end_at, id: :score_end_at %>
-  </div>
-
-  <div class="field">
-    <%= form.label :investment %>
-    <%= form.number_field :investment, id: :score_investment %>
-  </div>
-
-  <div class="field">
-    <%= form.label :proceeds %>
-    <%= form.number_field :proceeds, id: :score_proceeds %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  
 <% end %>

@@ -15,8 +15,8 @@ class StoresController < ApplicationController
   # GET /stores/new
   def new
     @store = Store.new
-    @store.latitude = 35.9063548
-    @store.longitude = 139.6230662
+    @store.latitude = 35.7
+    @store.longitude = 139.7
   end
   
   # GET /stores/1/edit

@@ -2,6 +2,7 @@
 
 <h1><%= "#{Score.model_name.human}管理" %></h1>
 
+
 <h2>検索条件の指定</h2>
 <%= form_tag(scores_path, method: :get) do %>
   <table width="100%" >
@@ -39,6 +40,8 @@
 
 
 <h2>検索結果</h2>
+<div id="calendar"></div>
+
 <table>
   <thead>
     <tr>
@@ -56,11 +59,25 @@
   </thead>
 
   <tbody>
+    <% scores_for_calendar = [] %>
+    <% default_date = Date.today %>
+    
     <% @scores.each do |score| %>
+      <%
+        scores_for_calendar << {
+          'id' => score.id,
+          'title' => "#{score.model}(#{score.store.name})",
+          'start' => score.start_at,
+          'end' => score.end_at,
+          'detail' => "#{score.proceeds}/#{score.investment}"
+        }
+        default_date = score.start_at.to_date
+      %>
+      
       <tr>
         <td><%= score.id %></td>
-        <td><%= User.find_by(id: score.user_id).name %></td>
-        <td><%= Store.find_by(id: score.store_id).name %></td>
+        <td><%= score.user.name %></td>
+        <td><%= score.store.name %></td>
         <td><%= score.model %></td>
         <td><%= score.seat %></td>
         <td><%= score.start_at %></td>
@@ -72,9 +89,76 @@
         <td><%= link_to t(:destroy), score, method: :delete, data: { confirm: t(:Are_you_sure?) } %></td>
       </tr>
     <% end %>
+    
   </tbody>
 </table>
 
 <br>
 
 <%= link_to t(:new_score), new_score_path %>
+
+<script>
+  $(document).on( 'turbolinks:load', function(){
+    $('#calendar').fullCalendar({
+      events: window.scores_calendar,
+      selectable: true,
+      selectHelper: true,
+      editable: true,
+      droppable: true,
+      nowIndicator: true,
+      defaultDate: "<%= default_date %>",
+      firstDay: 0,
+
+      header:{
+        left: 'prev, next, today',
+        center: 'title',
+        right: 'month, agendaWeek, agendaDay, listMonth',
+      },
+      
+      dayClick: function(date) {
+        alert('clicked ' + date.format());
+        // window.location.href = "<%#= new_score_path %>";
+      },
+      
+      eventClick: function(calEvent, jsEvent, view) {
+        $(this).css('border-color', 'red');
+        
+        var url = "<%= edit_score_path(0) %>"
+        url = url.replace(/\/0\/edit$/g, "/" + calEvent.id + "/edit");
+        window.location.href = url;
+      },
+      
+      eventDrop: function( calEvent, delta, revertFunc, jsEvent, ui, view ) {
+        alert(moment(calEvent.start).format("YYYY年MM月DD日(ddd) HH:mm:ss"));
+        var url = "<%= update_ajax_score_path(0) %>"
+        url = url.replace(/\/0\/update_ajax$/g, "/" + calEvent.id + "/update_ajax");
+        var postData = {"start_at":moment(calEvent.start).format(), "end_at":moment(calEvent.end).format()};
+        console.log(JSON.stringify(postData));
+
+        $.post(url,postData)
+          .done(function(data){
+            dataType: "json";
+            console.log(data.form);
+            alert(JSON.stringify(data)); //結果をアラートで表示
+          })
+          .fail(function(data, textStatus){
+            console.log("data: " + JSON.stringify(data));
+            console.log("error: " + textStatus);
+          })
+      }
+    });
+  });
+  
+  
+  function initCalendar(){
+    window.scores_calendar = <%= raw scores_for_calendar.to_json %>;
+  };
+  
+  initCalendar();
+  
+  $(document).on('turbolinks:before-cache', function(){
+    $('#calendar').empty();
+  });
+  
+ </script>
+ 
