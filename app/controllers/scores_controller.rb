@@ -1,5 +1,6 @@
 class ScoresController < ApplicationController
   before_action :set_score, only: [:show, :edit, :update, :update_ajax, :destroy]
+  before_action :authenticate_user!
   
   # GET /scores
   # GET /scores.json
@@ -12,23 +13,23 @@ class ScoresController < ApplicationController
     @search_params[:play_end] = params[:play_end]
     @win_or_lose = params[:win_or_lose]
     # store_id = params[:store_id]
-
-    # binding.pry
     
+    # binding.pry
     relation = Score.includes(:user, :store)
     relation = relation.where(id: @search_params[:id]) if @search_params[:id].present?
-    relation = relation.where(user_id: @search_params[:user_id]) if @search_params[:user_id].present?
+    # relation = relation.where(user_id: @search_params[:user_id]) if @search_params[:user_id].present?
+    relation = relation.where(user_id: current_user.id)
     relation = relation.where( "model like ?", "%" + @search_params[:model] + "%") if @search_params[:model].present?
     relation = relation.where( "start_at >= ?", @search_params[:play_start].to_datetime) if @search_params[:play_start].present?
     relation = relation.where( "end_at < ?", @search_params[:play_end].to_datetime.tomorrow) if @search_params[:play_end].present?
     
     case @win_or_lose.to_i
     when 1 then
-      relation = relation.where("investment + proceeds > 0")
+      relation = relation.where("proceeds - investment > 0")
     when 2 then
-      relation = relation.where("investment + proceeds < 0")
+      relation = relation.where("proceeds - investment < 0")
     when 3 then
-      relation = relation.where("investment + proceeds == 0")
+      relation = relation.where("proceeds - investment == 0")
     end
     
     @scores = relation.order(:start_at)
@@ -43,8 +44,11 @@ class ScoresController < ApplicationController
   def new
     @score = Score.new
     @score[:seat] = "0000"
+    t = Time.current
+    t = t - (t.hour - 10) * 3600 - t.min * 60 - t.sec
+    @score[:start_at] = t
   end
-
+  
   # GET /scores/1/edit
   def edit
   end
@@ -53,8 +57,7 @@ class ScoresController < ApplicationController
   # POST /scores.json
   def create
     @score = Score.new(score_params)
-    @score[:user_id] = params[:score_user_id].to_i
-    @score[:store_id] = params[:score_store_id].to_i
+    @score[:user_id] = current_user.id
     
     respond_to do |format|
       if @score.save
@@ -70,7 +73,7 @@ class ScoresController < ApplicationController
   # PATCH/PUT /scores/1
   # PATCH/PUT /scores/1.json
   def update
-    @score[:user_id] = params[:score_user_id]
+    @score[:user_id] = current_user.id
     @score[:store_id] = params[:score_store_id]
     
     respond_to do |format|
@@ -85,9 +88,11 @@ class ScoresController < ApplicationController
   end
 
   def update_ajax
+    # @score[:user_id] = current_user.id
+    @score[:store_id] = 2
     @score[:start_at] = params[:start_at]
     @score[:end_at] = params[:end_at]
-    # binding.pry
+
     if @score.save
       render :json => { message: "更新に成功しました。" }
     else
@@ -106,7 +111,6 @@ class ScoresController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_score
       @score = Score.find(params[:id])
     end

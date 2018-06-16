@@ -22,8 +22,8 @@ namespace :db do
       model = "海物語"
       seat  = 1234
       time = Time.now
-      investment = 1000 + 800 * n
-      proceeds = 5000 - 1000 * n
+      investment = 10000 + 500 * n
+      proceeds = 1000 * n
       Score.create!(user_id: user_id,
                    store_id: store_id,
                    model: model,
@@ -39,8 +39,8 @@ namespace :db do
       model = "バジリスク絆"
       seat  = 1234
       time = Time.now
-      investment = 1000 + 500 * n
-      proceeds = 7000 - 1500 * n
+      investment = 10000 + 500 * n
+      proceeds = 1500 * n
       Score.create!(user_id: user_id,
                    store_id: store_id,
                    model: model,

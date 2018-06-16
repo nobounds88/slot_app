@@ -27,6 +27,8 @@ ja:
   score_was_successfully_destroyed: '稼働を削除しました'
   save_changes: '保存'
   current_password: '現在のパスワード'
+  leave_blank_if_you_do_not_want_to_change_it: '変更しない場合は入力不要'
+  we_need_your_current_password_to_confirm_your_changes: '確認用'
   
   activerecord:
     models: 
@@ -62,7 +64,7 @@ ja:
   enumerize:
     user:
       gender: 
-        unknown: '不明'
+        unknown: '秘密'
         male: '男性'
         female: '女性'
 

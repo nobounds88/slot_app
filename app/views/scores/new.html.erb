@@ -1,5 +1,8 @@
+<p></p>
 <h1><%= "#{Score.model_name.human}を追加" %></h1>
 
 <%= render 'form', score: @score %>
 
-<%= link_to t(:back), scores_path %>
+<div class="center">
+    <%= link_to t(:back), scores_path %>
+</div>

@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  has_many :blogs
-  has_many :scores
-  
+  has_many :blogs, dependent: :destroy
+  has_many :scores, dependent: :destroy, autosave: true
+
   extend Enumerize
   enumerize :gender, in: [:unknown, :male, :female], default: :unknown, scope: true
   

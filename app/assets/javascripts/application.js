@@ -16,5 +16,7 @@
 //= require turbolinks
 //= require moment
 //= require fullcalendar
+// @ app/assets/javascripts/application.js
+//= require fullcalendar/lang/ja
 //= require_tree .
 //= require jquery-ui
