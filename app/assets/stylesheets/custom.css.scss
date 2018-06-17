@@ -20,6 +20,10 @@ body {
   padding-top: 50px;
 }
 
+container{
+  display: inline-block;
+  @include box_sizing;
+}
 // section {
 //   overflow: auto;
 // }

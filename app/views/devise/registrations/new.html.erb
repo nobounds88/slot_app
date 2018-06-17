@@ -11,12 +11,17 @@
           <%= f.label :name, class: "control-label" %>
           <%= f.text_field :name, autofocus: true, class: "form-control" %>
         </div>
-
+        
+        <div class="field">
+          <%= f.label :gender, class: "control-label" %>
+          <%= f.select :gender, User.gender.options, class: "form-control" %>
+        </div>
+        
         <div class="field">
           <%= f.label :email, class: "control-label" %>
           <%= f.email_field :email, autofocus: true, class: "form-control" %>
         </div>
-
+        
         <div class="field">
           <%= f.label :password, class: "control-label" %>
           <% if @validatable %>
@@ -24,7 +29,7 @@
           <% end %>
           <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
         </div>
-
+        
         <div class="field">
           <%= f.label :password_confirmation, class: "control-label" %>
           <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>

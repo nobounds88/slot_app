@@ -33,7 +33,7 @@
       <td ><%= select_tag("win_or_lose", options_for_select([["未設定",0], ["勝ち",1], ["負け",2], ["引き分け",3]], @win_or_lose)) %></td>
     </tr>
   </table>
-  <%= submit_tag '実行' %>
+  <%= submit_tag '実行', class: "btn btn-lg btn-primary"  %>
 <% end %>
 
 
@@ -99,6 +99,7 @@
   $(document).on( 'turbolinks:load', function(){
     $('#calendar').fullCalendar({
       lang: 'ja',
+      timezone: 'Asia/Tokyo',
       events: window.scores_calendar,
       selectable: true,
       selectHelper: true,
@@ -128,24 +129,49 @@
       },
       
       eventDrop: function( calEvent, delta, revertFunc, jsEvent, ui) {
-        alert(moment(calEvent.start).format("YYYY年MM月DD日(ddd) HH:mm:ss"));
         var url = "<%= update_ajax_score_path(0) %>"
         url = url.replace(/\/0\/update_ajax$/g, "/" + calEvent.id + "/update_ajax");
         var postData = {"start_at":moment(calEvent.start).format(), "end_at":moment(calEvent.end).format()};
+        alert(moment(calEvent.start).format("YYYY年MM月DD日(ddd) HH:mm:ss"));
         
         $.post(url,postData)
           .done(function(data){
             dataType: "json";
-            alert(JSON.stringify(data)); //結果をアラートで表示
+            jsonAlart(data); //結果をアラートで表示
           })
           .fail(function(data, textStatus){
             // console.log("error: " + textStatus);
-            alert(JSON.stringify(data)); //結果をアラートで表示
+            dataType: "json";
+            jsonAlart(data); //結果をアラートで表示
+          })
+      },
+      
+      eventResize: function(calEvent, delta, revertFunc) {
+        var url = "<%= update_ajax_score_path(0) %>"
+        url = url.replace(/\/0\/update_ajax$/g, "/" + calEvent.id + "/update_ajax");
+        var postData = {"start_at":moment(calEvent.start).format(), "end_at":moment(calEvent.end).format()};
+        alert(moment(calEvent.start).format("YYYY年MM月DD日(ddd) HH:mm:ss"));
+        
+        $.post(url,postData)
+          .done(function(data){
+            dataType: "json";
+            jsonAlart(data); //結果をアラートで表示
+          })
+          .fail(function(data, textStatus){
+            // console.log("error: " + textStatus);
+            dataType: "json";
+            jsonAlart(data); //結果をアラートで表示
           })
       }
+      
     });
   });
   
+  function jsonAlart(data){
+    var result = JSON.stringify(data);
+    result = JSON.parse(result);
+    alert(result.message);
+  };
   
   function initCalendar(){
     window.scores_calendar = <%= raw scores_for_calendar.to_json %>;

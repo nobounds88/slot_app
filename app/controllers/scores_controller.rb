@@ -88,11 +88,9 @@ class ScoresController < ApplicationController
   end
 
   def update_ajax
-    # @score[:user_id] = current_user.id
-    @score[:store_id] = 2
-    @score[:start_at] = params[:start_at]
-    @score[:end_at] = params[:end_at]
-
+    @score[:start_at] = params[:start_at].to_time
+    @score[:end_at] = params[:end_at].to_time
+    # binding.pry
     if @score.save
       render :json => { message: "更新に成功しました。" }
     else

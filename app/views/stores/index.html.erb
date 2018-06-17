@@ -1,11 +1,23 @@
 <p id="notice"><%= notice %></p>
 <h1><%= "#{Store.model_name.human}管理" %></h1>
 
+<%= form_tag(stores_path, method: :get) do %>
+<div class="container">
+  <table>
+    <tr>
+      <th><%= label_tag :keyword, "検索ワード"  %></th>
+      <td><%= text_field_tag :keyword, @search_params[:keyword], class: 'form-control', placeholder: "入力してください" %></td>
+    </tr>
+  </table>
+  <%= submit_tag '検索', class: "btn btn-lg btn-primary" %>
+</div>
+<% end %>
+
 <table class="table table-striped" >
   <thead>
     <tr>
       <th><%= Store.model_name.human %></th>
-      <th>Name kana</th>
+      <th><%= Store.human_attribute_name(:name_kana) %></th>
       <th><%= Store.human_attribute_name(:area) %></th>
       <th><%= Store.human_attribute_name(:address) %></th>
       <!--<th>Latitude</th>-->

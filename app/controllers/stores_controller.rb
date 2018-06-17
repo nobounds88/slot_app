@@ -2,9 +2,15 @@ class StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
 
   # GET /stores
-  # GET /stores.json
+  # GET /stores.json'
   def index
+    @search_params ||= {}
+    @search_params[:keyword] = params[:keyword]
+    
     @stores = Store.all
+    if params[:keyword].present?
+      @stores = @stores.where("(name||' '||ifnull(name_kana, '')||' '||ifnull(area, '')||' '||ifnull(address,'')) like ?", "%#{params[:keyword]}%")
+    end
   end
   
   # GET /stores/1
