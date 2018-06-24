@@ -1,6 +1,8 @@
-<h1><%= "#{Store.model_name.human}管理" %></h1>
+<h1><%= "#{Store.model_name.human}編集" %></h1>
 
 <%= render 'form', store: @store %>
 
-<%= link_to t(:show), @store %> |
+<!--<%= link_to t(:show), @store %> |-->
 <%= link_to t(:back), stores_path %>
+
+<%= render partial: 'map', locals: {store: @store, zoom: 16} %>

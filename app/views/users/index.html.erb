@@ -18,6 +18,10 @@
     <li>
       <%= gravatar_for user, size: 52 %>
       <%= link_to user.name, user %>
+      <br>
+      性別：<%= (user.gender.text) %>
+      <br>
+      生涯収支：
     </li>
   <% end %>
 </ul>

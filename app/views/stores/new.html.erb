@@ -1,5 +1,6 @@
 <h1><%= "#{Store.model_name.human}を追加" %></h1>
 
 <%= render 'form', store: @store %>
-
 <%= link_to t(:back), stores_path %>
+
+<%= render partial: 'map', locals: {store: @store, zoom: 4} %>

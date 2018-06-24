@@ -1,21 +1,19 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="col-md-4">
+  <aside  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <section>
       <h1>
         <%= gravatar_for @user %>
-        <%= @user.name %>
-        <%= (@user.gender.text) %>
+        <br>
+        ユーザー名：<%= @user.name %>
+        <br>
+        性別：<%= (@user.gender.text) %>
+        <br>
+        生涯収支：
+        <br>
+        <%= link_to t(:blog), blogs_path(1) %>
       </h1>
-      <h2>
-        <%= t :hello_html, username: @user.name %>
-      </h2>
-      <h3>
-        <%= I18n.l Time.now %>
-      </h3>
     </section>
-    <h1>
-      
-    </h1>
   </aside>
+    
 </div>

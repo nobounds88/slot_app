@@ -41,6 +41,11 @@
           <%= f.password_field :current_password, autocomplete: "off", class: "form-control" %>
         </div>
         
+        <div>
+          <%= f.label :収支データを公開する %>
+          <%= f.check_box :presenting, :as => :boolean, checked:false %>
+        </div>
+        
         <div class="actions">
           <%= f.submit t(:save_changes), class: "btn btn-lg btn-primary" %>
         </div>

@@ -20,9 +20,10 @@
       <th><%= Store.human_attribute_name(:name_kana) %></th>
       <th><%= Store.human_attribute_name(:area) %></th>
       <th><%= Store.human_attribute_name(:address) %></th>
+      <!--<th><%= Store.human_attribute_name(:saved_balls) %></th>-->
       <!--<th>Latitude</th>-->
       <!--<th>Longitude</th>-->
-      <th colspan="7"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -33,9 +34,9 @@
         <td><%= store.name_kana %></td>
         <td><%= store.area %></td>
         <td><%= store.address %></td>
+        <!--<td><%= store_users.saved_balls %></td>-->
         <!--<td><%= store.latitude %></td>-->
         <!--<td><%= store.longitude %></td>-->
-        <td><%= link_to t(:show), store %></td>
         <td><%= link_to t(:edit), edit_store_path(store) %></td>
         <td><%= link_to t(:destroy), store, method: :delete, data: { confirm: t(:Are_you_sure?) } %></td>
       </tr>
@@ -44,5 +45,5 @@
 </table>
 
 <br>
-
 <%= link_to t(:new_store), new_store_path %>
+

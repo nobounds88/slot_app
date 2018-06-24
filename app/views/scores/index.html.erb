@@ -4,14 +4,14 @@
 <h2>検索条件の指定</h2>
 <%= form_tag(scores_path, method: :get) do %>
   <table width="100%" >
-    <tr>
-      <th width ="10%" ><%= label_tag :id, "ID"  %></th>
-      <td ><%= text_field_tag :id, @search_params[:id], class: 'form-control', placeholder: "IDを入力してください" %></td>
-    </tr>
-    <tr>
-      <th ><%= label_tag :user_id, "ユーザーID"  %></th>
-      <td ><%= text_field_tag :user_id, @search_params[:user_id], class: 'form-control', placeholder: "ユーザーIDを入力してください" %></td>
-    </tr>
+    <!--<tr>-->
+    <!--  <th width ="10%" ><%= label_tag :id, "ID"  %></th>-->
+    <!--  <td ><%= text_field_tag :id, @search_params[:id], class: 'form-control', placeholder: "IDを入力してください" %></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--  <th ><%= label_tag :user_id, "ユーザーID"  %></th>-->
+    <!--  <td ><%= text_field_tag :user_id, @search_params[:user_id], class: 'form-control', placeholder: "ユーザーIDを入力してください" %></td>-->
+    <!--</tr>-->
     <tr>
       <th ><%= label_tag :model, "機種名"  %></th>
       <td ><%= text_field_tag :model, @search_params[:model], class: 'form-control', placeholder: "機種名を入力してください" %></td>
@@ -36,10 +36,10 @@
   <%= submit_tag '実行', class: "btn btn-lg btn-primary"  %>
 <% end %>
 
-
-<h2>検索結果</h2>
+<h2>¥※※※※※</h2>
 <div id="calendar"></div>
 
+<h2>検索結果</h2>
 <table>
   <thead>
     <tr>
