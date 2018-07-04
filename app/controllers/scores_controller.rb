@@ -97,6 +97,7 @@ class ScoresController < ApplicationController
       render :json => { message: "更新に失敗しました。" }
     end
   end
+
   
   # DELETE /scores/1
   # DELETE /scores/1.json

@@ -8,7 +8,11 @@ Rails.application.routes.draw do
       post 'update_ajax'
     end
   end
-  resources :stores
+  resources :stores do
+    member do
+      post 'saved_balls_ajax'
+    end
+  end
   resources :blogs
 
   root  'static_pages#home'

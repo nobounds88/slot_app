@@ -2,7 +2,7 @@
   <% if store.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(store.errors.count, "error") %> prohibited this store from being saved:</h2>
-
+      
       <ul>
       <% store.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -10,36 +10,37 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :store_name, placeholder: "Enter a location"%>
+  
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
+    <div class="field">
+      <%= form.label :area %>
+      <input id="store_area" placeholder="Enter a city" type="text" />
+    </div>
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, id: :store_name, placeholder: "Enter a location"%>
+    </div>
+    <div class="field">
+      <%= form.label :name_kana %>
+      <%= form.text_field :name_kana, id: :store_name_kana %>
+    </div>
+    <!--<div class="field">-->
+    <!--  <%= form.label :address %>-->
+    <!--  <%= form.text_field :address, id: :store_address, readonly: true %>-->
+    <!--</div>-->
+    <!--<div class="field">-->
+    <!--  <%= form.label :latitude %>-->
+    <!--  <%= form.text_field :latitude, id: :store_latitude, readonly: true %>-->
+    <!--</div>-->
+    <!--<div class="field">-->
+    <!--  <%= form.label :longitude %>-->
+    <!--  <%= form.text_field :longitude, id: :store_longitude, readonly: true %>-->
+    <!--</div>-->
+    <div class="actions">
+      <%= form.submit "登録", class:"btn btn-large btn-primary" %>
+    </div>
   </div>
-  <div class="field">
-    <%= form.label :name_kana %>
-    <%= form.text_field :name_kana, id: :store_name_kana %>
-  </div>
-  <div class="field">
-    <%= form.label :area %>
-    <input id="store_area" placeholder="Enter a city" type="text" />
-  </div>
-  <div class="field">
-    <%= form.label :address %>
-    <%= form.text_field :address, id: :store_address %>
-  </div>
-  <div class="field">
-    <%= form.label :latitude %>
-    <%= form.text_field :latitude, id: :store_latitude, readonly: true %>
-  </div>
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.text_field :longitude, id: :store_longitude, readonly: true %>
-  </div>
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.number_field :saved_balls, id: :store_saved_balls %>
-  </div>
-    
+  
   <style type="text/css">
     #map { 
       height: 400px;
@@ -57,10 +58,6 @@
       box-sizing: border-box;
     }
   </style>
-  
-  <div class="actions">
-    <%= form.submit %>
-  </div>
   
   <div class="field">
     <div id="map"></div>

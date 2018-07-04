@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   has_many :blogs, dependent: :destroy
   has_many :scores, dependent: :destroy, autosave: true
-  has_many :stores, dependent: :destroy
   has_many :store_users, dependent: :destroy
+  has_many :stores, through: :store_users
     
   attr_accessor :login
   

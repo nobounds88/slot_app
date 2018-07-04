@@ -226,8 +226,13 @@
       document.getElementById('iw-website-row').style.display = 'none';
     }
   }
-</script>
 
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDfoJttru5KMPC-d8gojhfEypF0elJAkvI&libraries=places&callback=initMap">
+  if(window.google) {
+    initMap();
+  } else {
+    $.ajax("https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDfoJttru5KMPC-d8gojhfEypF0elJAkvI&libraries=places&callback=initMap", {
+      crossDomain: true,
+      dataType: 'script'
+    });
+  }  
 </script>

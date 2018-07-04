@@ -11,50 +11,51 @@
     </div>
   <% end %>
   
-  <fieldset class="col-xs-12 col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2">
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
     <!--<div class="field">-->
-    <!--  <%= form.label User.model_name.human %>-->
+    <!--  <%= form.label User.model_name.human, class: "control-label" %>-->
     <!--  <%= form.select(:user_id, options_from_collection_for_select(User.all, :id, :name)) %>-->
     <!--</div>-->
     
     <div class="field">
-      <%= form.label Store.model_name.human %>
+      <%= form.label Store.model_name.human, class: "control-label" %>
       <%= form.select(:store_id, options_from_collection_for_select(Store.all, :id, :name)) %>
     </div>
   
     <div class="field">
-      <%= form.label :model %>
-      <%= form.text_field :model, id: :score_model %>
+      <%= form.label :model, class: "control-label" %>
+      <%= form.text_field :model, id: :score_model, class: "form-control" %>
     </div>
     
     <div class="field">
-      <%= form.label :seat %>
-      <%= form.number_field :seat, id: :score_seat %>
+      <%= form.label :seat, class: "control-label" %>
+      <%= form.number_field :seat, id: :score_seat, class: "form-control" %>
     </div>
   
     <div class="field">
-      <%= form.label :start_at %>
-      <%= form.datetime_select :start_at, id: :score_start_at %>
+      <%= form.label :start_at, class: "control-label" %>
+      <%= form.datetime_select :start_at, id: :score_start_at, class: "form-control" %>
     </div>
   
     <div class="field">
-      <%= form.label :end_at %>
-      <%= form.datetime_select :end_at, id: :score_end_at %>
+      <%= form.label :end_at, class: "control-label" %>
+      <%= form.datetime_select :end_at, id: :score_end_at, class: "form-control" %>
     </div>
     
     <div class="field">
-      <%= form.label :investment %>
-      <%= form.number_field :investment, id: :score_investment %>
+      <%= form.label :investment, class: "control-label" %>
+      <%= form.number_field :investment, id: :score_investment, class: "form-control" %>
     </div>
   
     <div class="field">
-      <%= form.label :proceeds %>
-      <%= form.number_field :proceeds, id: :score_proceeds %>
+      <%= form.label :proceeds, class: "control-label" %>
+      <%= form.number_field :proceeds, id: :score_proceeds, class: "form-control" %>
     </div>
-
-    <div class="actions ">
+    
+    <div class="actions">
       <%= form.submit "登録", class:"btn btn-large btn-primary" %>
     </div>
-  </fieldset>
     
+  </div>
+  
 <% end %>

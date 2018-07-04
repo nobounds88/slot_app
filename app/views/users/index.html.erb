@@ -2,14 +2,16 @@
 <h1><%= "#{User.model_name.human}管理" %></h1>
 
 <%= form_tag(users_path, method: :get) do %>
-<div>
+<div class="flex_container">
   <table>
     <tr>
       <th><%= label_tag :keyword, "検索ワード"  %></th>
       <td><%= text_field_tag :keyword, @search_params[:keyword], class: 'form-control', placeholder: "入力してください" %></td>
     </tr>
   </table>
-  <%= submit_tag '検索' %>
+  <div class="actions">
+    <%= submit_tag '検索', class: "btn btn-lg btn-primary" %>
+  </div>
 </div>
 <% end %>
 

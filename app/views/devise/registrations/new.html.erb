@@ -2,48 +2,46 @@
 <h1><%= t :sign_up %></h1>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-4 offset-md-3 offset-lg-4">
-
-        <%= render 'shared/error_messages', object: f.object %>
-        
-        <div class="field">
-          <%= f.label :name, class: "control-label" %>
-          <%= f.text_field :name, autofocus: true, class: "form-control" %>
-        </div>
-        
-        <div class="field">
-          <%= f.label :gender, class: "control-label" %>
-          <%= f.select :gender, User.gender.options, class: "form-control" %>
-        </div>
-        
-        <div class="field">
-          <%= f.label :email, class: "control-label" %>
-          <%= f.email_field :email, autofocus: true, class: "form-control" %>
-        </div>
-        
-        <div class="field">
-          <%= f.label :password, class: "control-label" %>
-          <% if @validatable %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em>
-          <% end %>
-          <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-        </div>
-        
-        <div class="field">
-          <%= f.label :password_confirmation, class: "control-label" %>
-          <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
-        </div>
-        
-        <div>
-          <%= f.label :収支データを公開する %>
-          <%= f.check_box :presenting, :as => :boolean, checked:false %>
-        </div>
-        
-        <div class="actions">
-          <%= f.submit t(:create_my_account), class: "btn btn-lg btn-primary" %>
-        </div>
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
+    <%= render 'shared/error_messages', object: f.object %>
+    
+    <div class="field">
+      <%= f.label :name, class: "control-label" %>
+      <%= f.text_field :name, autofocus: true, class: "form-control" %>
+    </div>
+    
+    <div class="field">
+      <%= f.label :gender, class: "control-label" %>
+      <%= f.select :gender, User.gender.options, class: "form-control" %>
+    </div>
+    
+    <div class="field">
+      <%= f.label :email, class: "control-label" %>
+      <%= f.email_field :email, autofocus: true, class: "form-control" %>
+    </div>
+    
+    <div class="field">
+      <%= f.label :password, class: "control-label" %>
+      <% if @validatable %>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+    </div>
+    
+    <div class="field">
+      <%= f.label :password_confirmation, class: "control-label" %>
+      <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+    </div>
+    
+    <div class="field">
+      <%#= f.label :収支データを公開する, class: "control-label" %>
+      <%#= f.check_box :presenting, :as => :boolean, checked:false %>
+      <input type="checkbox" name="user[presenting]" value="収支データを公開する" id="checkbox01" />
+      <label for="checkbox01" class="checkbox">収支データを公開する</label>
+    </div>
+    
+    <div class="actions">
+      <%= f.submit t(:create_my_account), class: "btn btn-lg btn-primary" %>
     </div>
   </div>
-  
 <% end %>

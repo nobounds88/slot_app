@@ -1,5 +1,7 @@
 class StoresController < ApplicationController
-  before_action :set_store, only: [:show, :edit, :update, :destroy]
+  before_action :set_store, only: [:show, :edit, :update, :destroy, :saved_balls_ajax]
+  # before_action :set_store_user, only: [:saved_balls_ajax]
+  before_action :authenticate_user!
 
   # GET /stores
   # GET /stores.json'
@@ -58,7 +60,21 @@ class StoresController < ApplicationController
       end
     end
   end
-
+  
+  
+  def saved_balls_ajax
+    store = Store.find_by(id: params[:store_id])
+    # binding.pry
+    s = store.store_users.new(store: store, saved_balls: params[:saved_balls])
+    s[:user_id] = params[:user_id].to_i
+    
+    if store.save
+      render :json => { message: "更新に成功しました。" }
+    else
+      render :json => { message: "更新に失敗しました。" }
+    end
+  end
+  
   # DELETE /stores/1
   # DELETE /stores/1.json
   def destroy

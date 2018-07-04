@@ -1,15 +1,15 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%= notice %></p>-->
 <h1><%= "#{Store.model_name.human}管理" %></h1>
 
 <%= form_tag(stores_path, method: :get) do %>
-<div class="container">
-  <table>
-    <tr>
-      <th><%= label_tag :keyword, "検索ワード"  %></th>
-      <td><%= text_field_tag :keyword, @search_params[:keyword], class: 'form-control', placeholder: "入力してください" %></td>
-    </tr>
-  </table>
-  <%= submit_tag '検索', class: "btn btn-lg btn-primary" %>
+<div class="flex_container">
+  <div class="inline">
+    <%= label_tag :keyword, "検索ワード", class: "control-label" %>
+  </div>
+    <%= text_field_tag :keyword, @search_params[:keyword], class: "form-control", placeholder: "入力してください" %>
+  <div class="actions">
+    <%= submit_tag '検索', class: "btn btn-lg btn-primary" %>
+  </div>
 </div>
 <% end %>
 
@@ -20,7 +20,7 @@
       <th><%= Store.human_attribute_name(:name_kana) %></th>
       <th><%= Store.human_attribute_name(:area) %></th>
       <th><%= Store.human_attribute_name(:address) %></th>
-      <!--<th><%= Store.human_attribute_name(:saved_balls) %></th>-->
+      <th><%= StoreUser.human_attribute_name(:saved_balls) %></th>
       <!--<th>Latitude</th>-->
       <!--<th>Longitude</th>-->
       <th colspan="4"></th>
@@ -34,7 +34,9 @@
         <td><%= store.name_kana %></td>
         <td><%= store.area %></td>
         <td><%= store.address %></td>
-        <!--<td><%= store_users.saved_balls %></td>-->
+        <td><%= button_tag store.store_users.find_by(user_id: current_user.id)&.saved_balls&.to_s(:delimited) || '-', 
+          {class: 'saved_balls_button', data: {store_id: store.id, store_name: store.name, user_id: current_user.id}} 
+        %></td>
         <!--<td><%= store.latitude %></td>-->
         <!--<td><%= store.longitude %></td>-->
         <td><%= link_to t(:edit), edit_store_path(store) %></td>
@@ -47,3 +49,47 @@
 <br>
 <%= link_to t(:new_store), new_store_path %>
 
+<script type="text/javascript">
+  $(function(){
+    $('.saved_balls_button').on('click', function(e) {
+      e.preventDefault();
+      var store_id = $(this).data('store-id');
+      var store_name = $(this).data('store-name');
+      var user_id = $(this).data('user-id');
+      var result = window.prompt(store_name + "の貯玉数を入力してください。");
+      alert('result=' + result);
+      
+      var url = "<%= saved_balls_ajax_store_path(0) %>"
+      url = url.replace(/\/0\/saved_balls_ajax/g, "/" + store_id + "/saved_balls_ajax");
+      var postData = {"user_id":user_id, "store_id":store_id, "saved_balls":result};
+      
+      $.ajax({
+        url:url,
+        type:'POST',
+        data:postData
+      })
+      // Ajaxリクエストが成功した時発動
+      .done( (data) => {
+          $('.result').html(data);
+          location.reload();
+          jsonAlart(data);
+      })
+      // Ajaxリクエストが失敗した時発動
+      .fail( (data) => {
+          $('.result').html(data);
+          jsonAlart(data);
+      })
+      // Ajaxリクエストが成功・失敗どちらでも発動
+      .always( (data) => {
+        
+      });
+    });
+  });
+  
+  function jsonAlart(data){
+    var result = JSON.stringify(data);
+    result = JSON.parse(result);
+    alert(result.message);
+  };
+  
+</script>

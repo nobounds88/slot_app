@@ -56,10 +56,13 @@ ja:
         proceeds: '回収'
       store:
         name: 'ホール名'
+        name_kana: 'ホール名（カナ）'
         area: '地域'
         address: '住所'
         latitude: '緯度'
         longitude: '経度'
+      store_user:
+        saved_balls: '貯玉'
         
   enumerize:
     user:
