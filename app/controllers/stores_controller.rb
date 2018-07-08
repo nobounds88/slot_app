@@ -62,14 +62,20 @@ class StoresController < ApplicationController
   end
   
   
-  def saved_balls_ajax
+  def update_saved_balls_ajax
     store = Store.find_by(id: params[:store_id])
+    store_user = store.store_users.find_by(user_id: params[:user_id])
+    if store_user.present? 
+      # 見つかった場合
+      store_user.saved_balls = params[:saved_balls]
+    else
+      # 見つからなかった場合
+      store_user = store.store_users.new(user_id: params[:user_id], saved_balls: params[:saved_balls])
+    end
     # binding.pry
-    s = store.store_users.new(store: store, saved_balls: params[:saved_balls])
-    s[:user_id] = params[:user_id].to_i
     
-    if store.save
-      render :json => { message: "更新に成功しました。" }
+    if store_user.save
+      render :json => { message: "更新に成功しました。", saved_balls: store_user.saved_balls }
     else
       render :json => { message: "更新に失敗しました。" }
     end

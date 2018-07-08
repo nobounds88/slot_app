@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
   resources :stores do
     member do
-      post 'saved_balls_ajax'
+      post 'update_saved_balls_ajax'
     end
   end
   resources :blogs

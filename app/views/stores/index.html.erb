@@ -26,7 +26,7 @@
       <th colspan="4"></th>
     </tr>
   </thead>
-
+  
   <tbody>
     <% @stores.each do |store| %>
       <tr>
@@ -35,7 +35,7 @@
         <td><%= store.area %></td>
         <td><%= store.address %></td>
         <td><%= button_tag store.store_users.find_by(user_id: current_user.id)&.saved_balls&.to_s(:delimited) || '-', 
-          {class: 'saved_balls_button', data: {store_id: store.id, store_name: store.name, user_id: current_user.id}} 
+          {class: 'saved_balls_button', data: {store_id: store.id, store_name: store.name, user_id: current_user.id} } 
         %></td>
         <!--<td><%= store.latitude %></td>-->
         <!--<td><%= store.longitude %></td>-->
@@ -46,6 +46,7 @@
   </tbody>
 </table>
 
+
 <br>
 <%= link_to t(:new_store), new_store_path %>
 
@@ -53,14 +54,19 @@
   $(function(){
     $('.saved_balls_button').on('click', function(e) {
       e.preventDefault();
+      var pushed_button = $(this)
       var store_id = $(this).data('store-id');
       var store_name = $(this).data('store-name');
       var user_id = $(this).data('user-id');
-      var result = window.prompt(store_name + "の貯玉数を入力してください。");
-      alert('result=' + result);
+      var result = window.prompt(store_name + "の貯玉数を入力してください。", pushed_button.text());
+      if (result == null)
+        return;
       
-      var url = "<%= saved_balls_ajax_store_path(0) %>"
-      url = url.replace(/\/0\/saved_balls_ajax/g, "/" + store_id + "/saved_balls_ajax");
+      console.log(this);
+      console.log($(this).text());
+      // console.log(pushed_button);
+      var url = "<%= update_saved_balls_ajax_store_path(0) %>"
+      url = url.replace(/\/0\/update_saved_balls_ajax/g, "/" + store_id + "/update_saved_balls_ajax");
       var postData = {"user_id":user_id, "store_id":store_id, "saved_balls":result};
       
       $.ajax({
@@ -70,14 +76,16 @@
       })
       // Ajaxリクエストが成功した時発動
       .done( (data) => {
-          $('.result').html(data);
-          location.reload();
-          jsonAlart(data);
+        $('.result').html(data);
+        // location.reload();
+        var result = JsonData(data);
+        alert(result.message);
+        pushed_button.text(result.saved_balls.toLocaleString());
       })
       // Ajaxリクエストが失敗した時発動
       .fail( (data) => {
-          $('.result').html(data);
-          jsonAlart(data);
+        $('.result').html(data);
+        jsonAlart(data);
       })
       // Ajaxリクエストが成功・失敗どちらでも発動
       .always( (data) => {
@@ -86,10 +94,9 @@
     });
   });
   
-  function jsonAlart(data){
+  function JsonData(data){
     var result = JSON.stringify(data);
-    result = JSON.parse(result);
-    alert(result.message);
+    return JSON.parse(result);
   };
-  
+
 </script>
