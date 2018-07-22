@@ -19,10 +19,13 @@ Rails.application.routes.draw do
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
-  
+
+  get "report/index"
+  get "report/model_chart"
+
   scope "(:locale)", locale: /en|ja/ do
     resources :users
   end
-  
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -20,3 +20,4 @@
 //= require fullcalendar/lang/ja
 //= require_tree .
 //= require jquery-ui
+//= require chartkick

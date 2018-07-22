@@ -29,6 +29,7 @@ ja:
   current_password: '現在のパスワード'
   leave_blank_if_you_do_not_want_to_change_it: '変更しない場合は入力不要'
   we_need_your_current_password_to_confirm_your_changes: '確認用'
+  analysis: '分析'
   
   activerecord:
     models: 
@@ -63,6 +64,8 @@ ja:
         longitude: '経度'
       store_user:
         saved_balls: '貯玉'
+      
+        
         
   enumerize:
     user:

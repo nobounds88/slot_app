@@ -1,0 +1,31 @@
+
+<h1><%= t(:analysis) %></h1>
+
+<%= render partial: 'search', locals: {action: report_index_path} %>
+
+<%= column_chart @chart_data %>
+<!--<div id="line_chart" style="width: 900px; height: 500px"></div>-->
+<!--<div id="chart_div"></div>-->
+
+
+<h2>検索結果</h2>
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>target_date</th>
+      <th>investment_summary</th>
+      <th>proceeds_summary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @scores.each do |score| %>
+      <tr>
+        <td><%= score.target_date %></td>
+        <td><%= score.investment_summary %></td>
+        <td><%= score.proceeds_summary %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

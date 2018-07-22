@@ -51,6 +51,8 @@
 <%= link_to t(:new_store), new_store_path %>
 
 <script type="text/javascript">
+  var aaa = 'hoge';
+  
   $(function(){
     $('.saved_balls_button').on('click', function(e) {
       e.preventDefault();
@@ -59,12 +61,16 @@
       var store_name = $(this).data('store-name');
       var user_id = $(this).data('user-id');
       var result = window.prompt(store_name + "の貯玉数を入力してください。", pushed_button.text());
-      if (result == null)
-        return;
       
-      console.log(this);
-      console.log($(this).text());
-      // console.log(pushed_button);
+      if (result == null){
+        return;
+      }else if (isNaN(result) || result == ""){
+        alert("半角整数を入力してください");
+        return;
+      }else if (result >= 10000000){
+        alert("1,000,000を超えました");
+        result = 9999999;
+      }
       var url = "<%= update_saved_balls_ajax_store_path(0) %>"
       url = url.replace(/\/0\/update_saved_balls_ajax/g, "/" + store_id + "/update_saved_balls_ajax");
       var postData = {"user_id":user_id, "store_id":store_id, "saved_balls":result};
@@ -77,7 +83,6 @@
       // Ajaxリクエストが成功した時発動
       .done( (data) => {
         $('.result').html(data);
-        // location.reload();
         var result = JsonData(data);
         alert(result.message);
         pushed_button.text(result.saved_balls.toLocaleString());
