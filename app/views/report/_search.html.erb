@@ -6,7 +6,7 @@
       <%= text_field_tag :model, @search_params[:model], class: "form-control", placeholder: "機種名を入力してください" %>
     </div>
 
-    <%= label_tag :model, "店舗名", {class: "control-label"} %>
+    <%= label_tag :store, "店舗名", {class: "control-label"} %>
     <div class="field">
       <%#= text_field_tag :store, @search_params[:store], class: "form-control", placeholder: "店舗名を入力してください" %>
       <%= select_tag(:store_id, options_from_collection_for_select(Store.all, :id, :name), placeholder: "店舗名を入力してください" ) %>
@@ -21,7 +21,7 @@
 
     <%= label_tag :win_or_lose, "収支条件"  %>
     <div class="field">
-      <%= select_tag("win_or_lose", options_for_select([["未設定",0], ["勝ち",1], ["負け",2], ["引き分け",3]], @win_or_lose)) %>
+      <%= select_tag("win_or_lose", options_for_select([["全て",0], ["勝ち",1], ["負け",2], ["引分け",3]], @win_or_lose)) %>
     </div>
 
     <div class="actions">

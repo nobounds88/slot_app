@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
   get "report/index"
   get "report/model_chart"
+  get "report/day_of_the_week_chart"
 
   scope "(:locale)", locale: /en|ja/ do
     resources :users

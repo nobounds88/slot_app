@@ -1,4 +1,4 @@
-<!--<p id="notice"><%= notice %></p>-->
+<!--<p id="notice"><%#= notice %></p>-->
 <h1><%= "#{Score.model_name.human}管理" %></h1>
 
 <%= form_tag(scores_path, method: :get) do %>
@@ -6,29 +6,29 @@
     <h2>フィルタ条件</h2>
     <!--<tr>-->
     <!--  <th width ="10%" ><%= label_tag :id, "ID"  %></th>-->
-    <!--  <td ><%= text_field_tag :id, @search_params[:id], class: "form-control", placeholder: "IDを入力してください" %></td>-->
+    <!--  <td ><%#= text_field_tag :id, @search_params[:id], class: "form-control", placeholder: "IDを入力してください" %></td>-->
     <!--</tr>-->
     <!--<tr>-->
-    <!--  <th ><%= label_tag :user_id, "ユーザーID"  %></th>-->
-    <!--  <td ><%= text_field_tag :user_id, @search_params[:user_id], class: 'form-control', placeholder: "ユーザーIDを入力してください" %></td>-->
+    <!--  <th ><%#= label_tag :user_id, "ユーザーID"  %></th>-->
+    <!--  <td ><%#= text_field_tag :user_id, @search_params[:user_id], class: 'form-control', placeholder: "ユーザーIDを入力してください" %></td>-->
     <!--</tr>-->
     <%= label_tag :model, "機種名", {class: "control-label"} %>
     <div class="field">
       <%= text_field_tag :model, @search_params[:model], class: "form-control", placeholder: "機種名を入力してください" %>
     </div>
-    
+
     <%= label_tag :play_date, "期間"  %>
     <div class="flex_container">
       <%= date_field_tag(:play_start,  @search_params[:play_start], class: "form-control") %>
       <p>～</p>
       <%= date_field_tag(:play_end,  @search_params[:play_end], class: "form-control") %>
     </div>
-    
+
     <%= label_tag :win_or_lose, "収支条件"  %>
     <div class="field">
       <%= select_tag("win_or_lose", options_for_select([["未設定",0], ["勝ち",1], ["負け",2], ["引き分け",3]], @win_or_lose)) %>
     </div>
-    
+
     <div class="actions">
       <%= submit_tag '実行', class: "btn btn-lg btn-primary"  %>
     </div>
@@ -58,7 +58,7 @@
   <tbody>
     <% scores_for_calendar = [] %>
     <% default_date = Date.today %>
-    
+
     <% @scores.each do |score| %>
       <%
         scores_for_calendar << {
@@ -70,7 +70,7 @@
         }
         default_date = score.start_at.to_date
       %>
-      
+
       <tr>
         <td><%= score.id %></td>
         <td><%= score.user.name %></td>
@@ -86,7 +86,7 @@
         <td><%= link_to t(:destroy), score, method: :delete, data: { confirm: t(:Are_you_sure?) } %></td>
       </tr>
     <% end %>
-    
+
   </tbody>
 </table>
 
@@ -107,32 +107,32 @@
       nowIndicator: true,
       defaultDate: "<%= default_date %>",
       firstDay: 0,
-      
+
       header:{
         left: 'prev, next, today',
         center: 'title',
         right: 'month, agendaWeek, agendaDay, listMonth',
       },
-      
+
       dayClick: function(date) {
         alert('clicked ' + date.format());
         // window.location.href = "<%#= new_score_path %>";
       },
-      
+
       eventClick: function(calEvent, jsEvent, view) {
         $(this).css('border-color', 'red');
-        
+
         var url = "<%= edit_score_path(0) %>"
         url = url.replace(/\/0\/edit$/g, "/" + calEvent.id + "/edit");
         window.location.href = url;
       },
-      
+
       eventDrop: function( calEvent, delta, revertFunc, jsEvent, ui) {
         var url = "<%= update_ajax_score_path(0) %>"
         url = url.replace(/\/0\/update_ajax$/g, "/" + calEvent.id + "/update_ajax");
         var postData = {"start_at":moment(calEvent.start).format(), "end_at":moment(calEvent.end).format()};
         alert(moment(calEvent.start).format("YYYY年MM月DD日(ddd) HH:mm:ss"));
-        
+
         $.post(url,postData)
           .done(function(data){
             dataType: "json";
@@ -144,13 +144,13 @@
             jsonAlart(data); //結果をアラートで表示
           })
       },
-      
+
       eventResize: function(calEvent, delta, revertFunc) {
         var url = "<%= update_ajax_score_path(0) %>"
         url = url.replace(/\/0\/update_ajax$/g, "/" + calEvent.id + "/update_ajax");
         var postData = {"start_at":moment(calEvent.start).format(), "end_at":moment(calEvent.end).format()};
         alert(moment(calEvent.start).format("YYYY年MM月DD日(ddd) HH:mm:ss"));
-        
+
         $.post(url,postData)
           .done(function(data){
             dataType: "json";
@@ -162,25 +162,24 @@
             jsonAlart(data); //結果をアラートで表示
           })
       }
-      
+
     });
   });
-  
+
   function jsonAlart(data){
     var result = JSON.stringify(data);
     result = JSON.parse(result);
     alert(result.message);
   };
-  
+
   function initCalendar(){
     window.scores_calendar = <%= raw scores_for_calendar.to_json %>;
   };
-  
+
   initCalendar();
-  
+
   $(document).on('turbolinks:before-cache', function(){
     $('#calendar').empty();
   });
-  
+
  </script>
- 

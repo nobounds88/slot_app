@@ -1,0 +1,5 @@
+
+<h1><%= t(:analysis) %></h1>
+
+<%= render partial: 'search', locals: {action: report_day_of_the_week_chart_path} %>
+<%= bar_chart @chart_data %>
