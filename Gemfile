@@ -14,7 +14,7 @@ group :development, :test do
   gem 'sqlite3', require: false
 end
 group :production do
-  gem 'pg', require: false
+  gem 'pg', '~> 0.19', require: false
 end
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
