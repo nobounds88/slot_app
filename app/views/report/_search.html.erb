@@ -9,7 +9,7 @@
     <%= label_tag :store, "店舗名", {class: "control-label"} %>
     <div class="field">
       <%#= text_field_tag :store, @search_params[:store], class: "form-control", placeholder: "店舗名を入力してください" %>
-      <%= select_tag(:store_id, options_from_collection_for_select(Store.all, :id, :name), placeholder: "店舗名を入力してください" ) %>
+      <%= select_tag(:store_id, options_from_collection_for_select(Store.all, :id, :name), placeholder: "店舗名を入力してください", include_blank: true ) %>
     </div>
 
     <%= label_tag :play_date, "期間"  %>
