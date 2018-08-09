@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ui
 //= require rails-ujs
 //= require bootstrap
 //= require turbolinks
@@ -19,5 +20,4 @@
 // @ app/assets/javascripts/application.js
 //= require fullcalendar/lang/ja
 //= require_tree .
-//= require jquery-ui
 //= require chartkick
