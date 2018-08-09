@@ -227,12 +227,12 @@
     }
   }
 
-  if(window.google) {
-    initMap();
-  } else {
+  // if(window.google) {
+  //   initMap();
+  // } else {
     $.ajax("https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDfoJttru5KMPC-d8gojhfEypF0elJAkvI&libraries=places&callback=initMap", {
       crossDomain: true,
       dataType: 'script'
     });
-  }  
+  // }  
 </script>
