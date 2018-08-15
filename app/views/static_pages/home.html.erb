@@ -1,11 +1,9 @@
 <div class="center jumbotron">
   <h1><%= t(:Welcome_to_the_Slot_App) %></h1>
-
-  <h3>
+  <h2>
     パチスロの収支管理とホール分析
-  </h3>
-  
-  <%= link_to t(:sign_up_now), new_user_registration_path, class: "btn btn-lg btn-primary" %>
-</div>
+  </h2>
 
-<%= link_to image_tag("slot.png", alt: "Rails") %>
+  <%= link_to t(:sign_up_now), new_user_registration_path, class: "btn btn-lg btn-primary" %>
+  <%= image_tag("slot.png", alt: "slot") %>
+</div>
