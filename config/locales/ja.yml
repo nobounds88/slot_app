@@ -12,7 +12,7 @@ ja:
   sign_in: 'ログイン'
   sign_out: 'ログアウト'
   back: '戻る'
-  
+
   new_score: '稼働を追加'
   new_blog: '記事を書く'
   new_store: 'ホールを追加'
@@ -30,9 +30,12 @@ ja:
   leave_blank_if_you_do_not_want_to_change_it: '変更しない場合は入力不要'
   we_need_your_current_password_to_confirm_your_changes: '確認用'
   analysis: '分析'
-  
+  investment_and_proceeds: '収支'
+  by_model: '機種別'
+  by_day_of_week: '曜日別'
+
   activerecord:
-    models: 
+    models:
       user: 'ユーザー'
       blog: 'ブログ'
       score: '収支'
@@ -64,12 +67,12 @@ ja:
         longitude: '経度'
       store_user:
         saved_balls: '貯玉'
-      
-        
-        
+
+
+
   enumerize:
     user:
-      gender: 
+      gender:
         unknown: '秘密'
         male: '男性'
         female: '女性'
@@ -276,5 +279,4 @@ ja:
       long: "%Y年%m月%d日(%a) %H時%M分%S秒 %z"
       short: "%y/%m/%d %H:%M"
     pm: 午後
-    
-  
+

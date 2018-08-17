@@ -8,7 +8,16 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a class="nav-link" href=<%= root_path %>><%= t(:Home) %></a></li>
         <% if signed_in? %>
-          <li class="nav-item active"><a class="nav-link" href=<%= report_index_path %>><%= t(:analysis) %></a></li>
+          <li class="nav-item active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= t(:analysis) %>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <%= link_to t(:investment_and_proceeds), report_index_path, { :class => "dropdown-item" } %>
+              <%= link_to t(:by_model), report_model_chart_path, { :class => "dropdown-item" } %>
+              <%= link_to t(:by_day_of_week), report_day_of_the_week_chart_path, {:class => "dropdown-item" } %>
+            </div>
+          </li>
           <li class="nav-item active"><a class="nav-link" href=<%= scores_path %>><%= Score.model_name.human %></a></li>
           <li class="nav-item active"><a class="nav-link" href=<%= stores_path %>><%= Store.model_name.human %></a></li>
           <li class="nav-item active"><a class="nav-link" href=<%= blogs_path %>><%= Blog.model_name.human %></a></li>
