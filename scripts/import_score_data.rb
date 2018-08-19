@@ -35,7 +35,7 @@ class ImportScoreData
       puts score.inspect
 
       date += 1.day
-      break if date >= Date.today
+      break if date >= Date.today.to_time
     end
   end
 end
@@ -48,8 +48,8 @@ else
 end
 tsv_filename = ARGV[2]
 
-start_date = Time.strptime(ARGV[3] || '20170101', '%Y%m%d')
-
+start_date = Time.strptime(ARGV[3] || '20180101', '%Y%m%d')
+binding.pry
 user = User.find_by(id: user_id)
 if user.blank?
   puts "user_id=#{user_id}のユーザが見つかりません。"
