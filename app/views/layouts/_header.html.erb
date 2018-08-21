@@ -8,7 +8,18 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a class="nav-link" href=<%= root_path %>><%= t(:Home) %></a></li>
         <% if signed_in? %>
-          <li class="nav-item active">
+          <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <%= t(:account) %>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <%= link_to t(:profile), current_user, { :class => "dropdown-item" } %>
+              <%= link_to t(:settings), edit_user_registration_path, { :class => "dropdown-item" } %>
+              <div class="dropdown-divider"></div>
+              <%= link_to t(:sign_out), destroy_user_session_path, {:method => "delete", :class => "dropdown-item" } %>
+            </div>
+          </li>
+          <li class="nav-item dropdown active">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <%= t(:analysis) %>
             </a>
@@ -23,17 +34,6 @@
           <li class="nav-item active"><a class="nav-link" href=<%= blogs_path %>><%= Blog.model_name.human %></a></li>
           <li class="nav-item active"><a class="nav-link" href=<%= new_user_session_path %>><%= t(:sign_in) %></a></li>
           <li class="nav-item active"><a class="nav-link" href=<%= users_path %>><%= t(:users) %></a></li>
-          <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= t(:account) %>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to t(:profile), current_user, { :class => "dropdown-item" } %>
-              <%= link_to t(:settings), edit_user_registration_path, { :class => "dropdown-item" } %>
-              <div class="dropdown-divider"></div>
-              <%= link_to t(:sign_out), destroy_user_session_path, {:method => "delete", :class => "dropdown-item" } %>
-            </div>
-          </li>
         <% else %>
           <li class="nav-item active"><a class="nav-link" href=<%= new_user_session_path %>><%= t(:sign_in) %></a></li>
         <% end %>

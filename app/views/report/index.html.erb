@@ -1,5 +1,6 @@
 
 <h1><%= t(:analysis) %></h1>
+<h2>収支チャート</h2>
 
 <%= render partial: 'search', locals: {action: report_index_path} %>
 <%= column_chart @chart_data %>
